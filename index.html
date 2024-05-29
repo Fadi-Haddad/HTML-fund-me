@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fund Me App</title>
+</head>
+<body>
+    <script> async function connect(){
+        window.ethereum
+        ? await window.ethereum.request({method: "eth_requestAccounts"})
+        : alert("Metamask not installed!!")
+    }
+    </script>
+    <button id="connectButton" onclick="connect()">Connect</button>
+</body>
+</html>
