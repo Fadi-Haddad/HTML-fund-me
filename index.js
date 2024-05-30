@@ -14,7 +14,7 @@ async function connect() {
     : alert("Metamask not installed!!");
 }
 async function fund() {
-  const sentAmount = "1";
+  const sentAmount = document.getElementById("ethAmount").value
   // we will need provider // connection to the blockchain
   // signer // wallet //someone with enough gas
   // contract to interact with (ABI and addresses)
