@@ -2,15 +2,26 @@ import { ethers } from "./ethers-5.2.esm.min.js";
 
 const connectButton = document.getElementById("connectButton");
 const fundButton = document.getElementById("fundButton");
+const balanceButton = document.getElementById("balanceButton");
 
 import { abi, contractAddress } from "./constants.js";
 
 connectButton.onclick = connect;
 fundButton.onclick = fund;
+balanceButton.onclick = getBalance;
+
+async function getBalance(){
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const balance  = await provider.getBalance(contractAddress)
+    console.log(ethers.utils.formatEther(balance))
+}
 
 async function connect() {
   window.ethereum
-    ? await window.ethereum.request({ method: "eth_requestAccounts" })
+  ? (
+    await window.ethereum.request({ method: "eth_requestAccounts" }),
+    connectButton.innerHTML = "connected"
+  )
     : alert("Metamask not installed!!");
 }
 async function fund() {
@@ -32,7 +43,7 @@ async function fund() {
     }
   }
 }
-function listenForTransactionMine(transactionResponse, provider){
+function listenForTransactionMine(transactionResponse, provider){  // this will be abstarcted away later
     console.log(`Mining ${transactionResponse.hash}...`)
     return new Promise((resolve, reject)=>{ // we wrap the function in a promise
         provider.once(transactionResponse.hash, (transactionReceipt)=>{
