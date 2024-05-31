@@ -3,17 +3,27 @@ import { ethers } from "./ethers-5.2.esm.min.js";
 const connectButton = document.getElementById("connectButton");
 const fundButton = document.getElementById("fundButton");
 const balanceButton = document.getElementById("balanceButton");
+const withdrawButton = document.getElementById("withdrawButton");
 
 import { abi, contractAddress } from "./constants.js";
 
 connectButton.onclick = connect;
 fundButton.onclick = fund;
 balanceButton.onclick = getBalance;
+withdrawButton.onclick = withdraw;
 
 async function getBalance(){
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const balance  = await provider.getBalance(contractAddress)
     console.log(ethers.utils.formatEther(balance))
+}
+
+async function withdraw(){
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer  =  provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, abi, signer);
+    const transactionResponse = await contract.withdraw()
+    await listenForTransactionMine(transactionResponse, provider)    
 }
 
 async function connect() {
