@@ -17,13 +17,17 @@ async function getBalance(){
     const balance  = await provider.getBalance(contractAddress)
     console.log(ethers.utils.formatEther(balance))
 }
-
 async function withdraw(){
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer  =  provider.getSigner();
     const contract = new ethers.Contract(contractAddress, abi, signer);
-    const transactionResponse = await contract.withdraw()
-    await listenForTransactionMine(transactionResponse, provider)    
+    try{
+        const transactionResponse = await contract.withdraw()
+        await listenForTransactionMine(transactionResponse, provider)    
+    }
+    catch(error){
+        console.log(error)
+    }
 }
 
 async function connect() {
